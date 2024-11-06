@@ -1,18 +1,19 @@
-package main;
+package main.service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
+import main.util.Graph;
+import main.model.TraceHopState;
 
-public class TraceSolver {
-    private final Graph graph;
+import java.util.*;
 
-    public TraceSolver(Graph graph) {
+public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterface, ExactHopsTraceInterface, ShortestTraceInterface {
+    private Graph graph;
+
+    public TraceService(Graph graph) {
         this.graph = graph;
     }
 
-    public String calculateTraceLatency(String trace) {
+    @Override
+    public String traceLatency(String trace) {
         int totalLatency = 0;
         String[] services = trace.split("-");
         for (int i = 0; i < services.length - 1; i++) {
@@ -27,44 +28,48 @@ public class TraceSolver {
         return String.valueOf(totalLatency);
     }
 
-    public int countTracesWithMaxHops(String start, String end, int maxHops) {
-        return countTracesWithHopsHelper(start, end, maxHops, 0);
+    @Override
+    public int countTraceUnderMaxHop(String start, String end, int maxHops) {
+        return countTraceUnderMaxHop(start, end, maxHops, 0);
     }
 
-    private int countTracesWithHopsHelper(String current, String end, int maxHops, int currentHops) {
+    private int countTraceUnderMaxHop(String current, String end, int maxHops, int currentHops) {
         if (currentHops > maxHops) {
             return 0;
         }
-        if (currentHops > 0 && current.equalsIgnoreCase(end)) {
-            return 1;
-        }
 
         int count = 0;
+        if (currentHops > 0 && current.equalsIgnoreCase(end)) {
+            count++;
+        }
+
         for (String next : graph.getNeighbors(current)) {
-            count += countTracesWithHopsHelper(next, end, maxHops, currentHops + 1);
+            count += countTraceUnderMaxHop(next, end, maxHops, currentHops + 1);
         }
         return count;
     }
 
-    public int countTracesWithExactHops(String start, String end, int exactHops) {
+    @Override
+    public int countTraceByExactHops(String start, String end, int exactHops) {
         if (exactHops == 0) {
             return start.equalsIgnoreCase(end) ? 1 : 0;
         }
 
         int count = 0;
         for (String next : graph.getNeighbors(start)) {
-            count += countTracesWithExactHops(next, end, exactHops - 1);
+            count += countTraceByExactHops(next, end, exactHops - 1);
         }
         return count;
     }
 
+    @Override
     public int shortestLength(String start, String end) {
-        PriorityQueue<TraceIterationState> pq = new PriorityQueue<>(Comparator.comparingInt(TraceIterationState::getLatency));
+        PriorityQueue<TraceHopState> pq = new PriorityQueue<>(Comparator.comparingInt(TraceHopState::getLatency));
         Set<String> visited = new HashSet<>();
 
-        pq.offer(new TraceIterationState(start, 0, 0));
+        pq.offer(new TraceHopState(start, 0, 0));
         while (!pq.isEmpty()) {
-            TraceIterationState current = pq.poll();
+            TraceHopState current = pq.poll();
 
             if (end.equalsIgnoreCase(current.getNode()) && current.getHop() != 0) {
                 return current.getLatency();
@@ -76,7 +81,7 @@ public class TraceSolver {
 
             for (String next : graph.getNeighbors(current.getNode())) {
                 int newLatency = current.getLatency() + graph.getLatency(current.getNode(), next);
-                pq.offer(new TraceIterationState(next, newLatency, current.getHop() + 1));
+                pq.offer(new TraceHopState(next, newLatency, current.getHop() + 1));
             }
 
         }
@@ -84,11 +89,11 @@ public class TraceSolver {
         return -1;
     }
 
-    public int countTracesWithMaxLatency(String start, String end, int maxLatency) {
-        return countTracesUnderLatencyHelper(start, end, maxLatency, 0, !start.equalsIgnoreCase(end));
+    public int countTraceUnderLatency(String start, String end, int maxLatency) {
+        return countTraceUnderLatency(start, end, maxLatency, 0, !start.equalsIgnoreCase(end));
     }
 
-    private int countTracesUnderLatencyHelper(String current, String end, int maxLatency, int currentLatency, boolean canEnd) {
+    private int countTraceUnderLatency(String current, String end, int maxLatency, int currentLatency, boolean canEnd) {
         if (currentLatency >= maxLatency) {
             return 0;
         }
@@ -100,7 +105,7 @@ public class TraceSolver {
 
         for (String next : graph.getNeighbors(current)) {
             int newLatency = currentLatency + graph.getLatency(current, next);
-            count += countTracesUnderLatencyHelper(next, end, maxLatency, newLatency, true);
+            count += countTraceUnderLatency(next, end, maxLatency, newLatency, true);
         }
 
         return count;

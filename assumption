@@ -1,0 +1,5 @@
+for the max hops, it allows a trace with midway stop that is same as the end
+e.g.: C -> C
+1. C,D,C
+2. C,D,C,D,C
+3. C,D,C,E,B,C

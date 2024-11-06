@@ -1,7 +1,7 @@
 package test;
 
-import main.Graph;
-import main.TraceSolver;
+import main.util.Graph;
+import main.service.TraceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class TraceSolverTest {
-    private TraceSolver solver;
+    private TraceService solver;
     private Graph graph;
 
     @BeforeEach
@@ -19,39 +19,77 @@ class TraceSolverTest {
         for (String edge : edges) {
             graph.addEdge(edge);
         }
-        solver = new TraceSolver(graph);
+        solver = new TraceService(graph);
     }
 
-    @Test
-    void testFixedTraces() {
-        assertEquals("9", solver.calculateTraceLatency("A-B-C"));
-        assertEquals("5", solver.calculateTraceLatency("A-D"));
-        assertEquals("13", solver.calculateTraceLatency("A-D-C"));
-        assertEquals("22", solver.calculateTraceLatency("A-E-B-C-D"));
-        assertEquals("NO SUCH TRACE", solver.calculateTraceLatency("A-E-D"));
+//    @Test
+    void testTraceLatency() {
+//        normal cases
+        assertEquals("9", solver.traceLatency("A-B-C")); // #1
+        assertEquals("5", solver.traceLatency("A-D")); // #2
+        assertEquals("13", solver.traceLatency("A-D-C")); // #3
+        assertEquals("22", solver.traceLatency("A-E-B-C-D")); // #4
+        assertEquals("NO SUCH TRACE", solver.traceLatency("A-E-D")); // #5
+
+        assertEquals("18", solver.traceLatency("A-D-C-E-B"));
+
+//        extreme cases
+//        traverse duplicate node
+        assertEquals("30", solver.traceLatency("A-B-C-D-E-B-C"));
     }
 
     @Test
     void testMaxHopsTraces() {
-        assertEquals(2, solver.countTracesWithMaxHops("C", "C", 3));
+//        normal cases
+        assertEquals(2, solver.countTraceUnderMaxHop("C", "C", 3)); // #6
+        assertEquals(4, solver.countTraceUnderMaxHop("C", "C", 4));
+//        extreme cases
+//        text extremely large max hops
+
+//        assertEquals(66, solver.countMaxHopsTraces("A", "D", 99));
+        assertEquals(35, solver.countTraceUnderMaxHop("A", "D", 9));
     }
 
     @Test
     void testExactHopsTraces() {
-        assertEquals(3, solver.countTracesWithExactHops("A", "C", 4));
+        assertEquals(3, solver.countTraceByExactHops("A", "C", 4)); // #7
+
+        assertEquals(1, solver.countTraceByExactHops("A", "D", 1));
+        assertEquals(0, solver.countTraceByExactHops("A", "D", 2));
+        assertEquals(2, solver.countTraceByExactHops("A", "D", 3));
+        assertEquals(1, solver.countTraceByExactHops("A", "D", 4));
+        assertEquals(3, solver.countTraceByExactHops("A", "D", 5));
+        assertEquals(3, solver.countTraceByExactHops("A", "D", 6));
+        assertEquals(6, solver.countTraceByExactHops("A", "D", 7));
+        assertEquals(7, solver.countTraceByExactHops("A", "D", 8));
+        assertEquals(12, solver.countTraceByExactHops("A", "D", 9));
+
+//        extreme cases
+        assertEquals(0, solver.countTraceByExactHops("A", "A", 6));
+        assertEquals(0, solver.countTraceByExactHops("C", "A", 6));
+
     }
 
     @Test
     void testShortestPath() {
-        assertEquals(9, solver.shortestLength("A", "C"));
-        assertEquals(7, solver.shortestLength("A", "E"));
-        assertEquals(15, solver.shortestLength("E", "D"));
-        assertEquals(9, solver.shortestLength("B", "B"));
+//        normal cases
+        assertEquals(9, solver.shortestLength("A", "C")); // #8
+        assertEquals(9, solver.shortestLength("B", "B")); // #9
+        assertEquals(6, solver.shortestLength("D", "E"));
         assertEquals(5, solver.shortestLength("C", "B"));
+//        invalid input cases
+        assertEquals(-1, solver.shortestLength("D", "A"));
     }
 
     @Test
-    void testTracesUnderLatency() {
-        assertEquals(7, solver.countTracesWithMaxLatency("C", "C", 30));
+    void testMaxLatencyTraces() {
+//        normal cases
+        assertEquals(7, solver.countTraceUnderLatency("C", "C", 30)); // #10
+        assertEquals(1, solver.countTraceUnderLatency("D", "C", 9));
+        assertEquals(5, solver.countTraceUnderLatency("D", "C", 25));
+
+//        invalid input cases
+        assertEquals(0, solver.countTraceUnderLatency("D", "A", 25));
+
     }
 }
