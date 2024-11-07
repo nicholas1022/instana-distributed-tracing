@@ -31,27 +31,6 @@ public class Tracing {
             }
 
             traceService.runCommand(input);
-
-//            String[] inputArr = input.split(" ");
-//            String command = inputArr[0].trim();
-//            String data = inputArr[1].trim();
-//            switch (command) {
-//                case "trace-latency":
-//                    System.out.println(traceService.traceLatency(data));
-//                    break;
-//                case "count-trace-with-max-hops":
-//                    System.out.println(traceService.countTraceUnderMaxHop(data));
-//                    break;
-//                case "count-trace-with-exact-hops":
-//                    System.out.println(traceService.countTraceByExactHops(data));
-//                    break;
-//                case "shortest-length":
-//                    System.out.println(traceService.shortestLength(data));
-//                    break;
-//                case "count-trace-with-max-latency":
-//                    System.out.println(traceService.countTraceUnderLatency(data));
-//                    break;
-//            }
         }
 
     }

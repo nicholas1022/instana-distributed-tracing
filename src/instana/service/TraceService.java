@@ -23,7 +23,7 @@ public class TraceService {
         int totalLatency = 0;
 
         String[] services = trace.split("-");
-        if(trace.length() <= 1 || services.length <= 1) {
+        if(trace.length() <= 1 || services.length != 2) {
             return "INVALID INPUT";
         }
         for (int i = 0; i < services.length - 1; i++) {
