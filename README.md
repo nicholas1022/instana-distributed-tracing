@@ -73,3 +73,4 @@ count-trace-with-max-latency  <origin_service>-<destination_service>
 batch-job  <file_path>
 # e.g.: batch-job commands.txt
 ```
+The format of the commands input file: trace-latency A-B-C,count-trace-with-max-hops C-C3, count-trace-with-exact-hops A-C4,shortest-length A-C,count-trace-with-max-latency C-C30

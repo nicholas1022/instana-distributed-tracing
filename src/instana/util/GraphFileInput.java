@@ -13,7 +13,7 @@ public class GraphFileInput implements GraphInputInterface{
     }
 
     public void inputGraph(Graph graph) {
-        System.out.println("Enter input file name");
+        System.out.println("Enter graph file");
         String inputFileName = sc.nextLine();
         try (BufferedReader reader = new BufferedReader(new java.io.FileReader(inputFileName))) {
             String line = reader.readLine();

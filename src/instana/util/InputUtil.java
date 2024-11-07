@@ -54,6 +54,7 @@ public class InputUtil {
             }
         }
         String hop = s.substring(i + 1);
+        if (isAlpha(hop) || hop.isEmpty()) return null;
 
         String[] services = s.substring(0, i+1).split("-");
         if (services.length < 2) {

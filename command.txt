@@ -1,0 +1,1 @@
+trace-latency A-B-C,trace-latency A-D,trace-latency A-D-C,trace-latency A-E-B-C-D,trace-latency A-E-D,count-trace-with-max-hops C-C3, count-trace-with-exact-hops A-C4,shortest-length A-C,shortest-length B-B,count-trace-with-max-latency C-C30

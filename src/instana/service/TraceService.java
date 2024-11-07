@@ -1,6 +1,7 @@
 package instana.service;
 
 import instana.model.TraceLatencyState;
+import instana.util.CommandFileInput;
 import instana.util.Graph;
 import instana.model.TraceHopState;
 import instana.util.InputUtil;
@@ -178,5 +179,45 @@ public class TraceService {
         }
 
         return count;
+    }
+
+    public void batchJob(String file) {
+        CommandFileInput commandFileInput = new CommandFileInput();
+        String inputLine = commandFileInput.inputCommand(file);
+        String[] inputArr = inputLine.split(",");
+        for (String commandInput : inputArr) {
+            runCommand(commandInput);
+        }
+    }
+
+    public void runCommand(String commandParam) {
+        String[] inputArr = commandParam.trim().split(" ");
+        if (inputArr.length < 2) {
+            System.out.println("INVALID INPUT");
+            return;
+        }
+        String command = inputArr[0].trim();
+        String data = inputArr[1].trim();
+
+        switch (command) {
+            case "trace-latency":
+                System.out.println(traceLatency(data));
+                break;
+            case "count-trace-with-max-hops":
+                System.out.println(countTraceUnderMaxHop(data));
+                break;
+            case "count-trace-with-exact-hops":
+                System.out.println(countTraceByExactHops(data));
+                break;
+            case "shortest-length":
+                System.out.println(shortestLength(data));
+                break;
+            case "count-trace-with-max-latency":
+                System.out.println(countTraceUnderLatency(data));
+                break;
+            case "batch-job":
+                batchJob(data);
+                break;
+        }
     }
 }
