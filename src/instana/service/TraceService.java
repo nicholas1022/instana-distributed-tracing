@@ -7,7 +7,7 @@ import instana.util.InputUtil;
 
 import java.util.*;
 
-public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterface, ExactHopsTraceInterface, ShortestTraceInterface {
+public class TraceService {
     private Graph graph;
 
     private InputUtil inputUtil;
@@ -17,7 +17,7 @@ public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterfac
         this.inputUtil = inputUtil;
     }
 
-    @Override
+    
     public String traceLatency(String trace) {
         int totalLatency = 0;
 
@@ -37,7 +37,7 @@ public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterfac
         return String.valueOf(totalLatency);
     }
 
-    @Override
+    
     public int countTraceUnderMaxHop(String data) {
 
         TraceHopState traceHopState = inputUtil.parseHop(data);
@@ -75,7 +75,7 @@ public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterfac
         return count;
     }
 
-    @Override
+    
     public int countTraceByExactHops(String data) {
         TraceHopState traceHopeState = inputUtil.parseHop(data);
         if (traceHopeState == null) return -1;
@@ -108,7 +108,7 @@ public class TraceService implements TraceLatencyInterface, MaxHopsTraceInterfac
         return count;
     }
 
-    @Override
+    
     public int shortestLength(String trace) {
         if (trace == null) return -1;
 
