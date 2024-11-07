@@ -1,4 +1,4 @@
-package main.util;
+package instana.util;
 
 public interface GraphInputInterface {
 
