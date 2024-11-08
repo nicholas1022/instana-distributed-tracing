@@ -1,7 +1,12 @@
-1. for the max hops, it allows a trace with midway stop that is same as the end
+1. It allows a trace that its intermediate nodes and the destination node are same
 e.g.: C -> C
 1. C,D,C
 2. C,D,C,D,C
 3. C,D,C,E,B,C
 
-2. Maximum number of the node is 26 since they are represented by single alphabet character only
+2. Nodes are represented by A - E only
+
+3. The supplied parameters for problem #6, 7, and 10 are not too big to cause application out of memory.
+e.g.:
+#6, #7 -> 100
+#10 -> 100

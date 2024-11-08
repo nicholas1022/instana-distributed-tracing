@@ -1,6 +1,6 @@
 package instana;
 
-import instana.model.TraceGraph;
+import instana.core.TraceGraph;
 import instana.service.inputData.CommandLineInput;
 import instana.service.inputData.FileReader;
 import instana.service.inputData.commandInput.CommandCommandLineInput;

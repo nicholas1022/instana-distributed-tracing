@@ -1,7 +1,6 @@
 package instana.service.inputData.graphInput;
 
-import instana.model.GraphInterface;
-import instana.model.TraceGraph;
+import instana.core.GraphInterface;
 
 public interface GraphInputInterface {
 

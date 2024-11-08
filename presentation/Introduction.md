@@ -4,5 +4,7 @@ This application finds the information about the traces of microservice applicat
 
 
 # Methodology
-This application uses traceGraph to store and manipulate the data of the traces.
+This application uses graph to store and manipulate the data of the traces.
+
+
 

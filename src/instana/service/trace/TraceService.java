@@ -1,7 +1,7 @@
 package instana.service.trace;
 
 import instana.model.TraceLatencyState;
-import instana.model.TraceGraph;
+import instana.core.TraceGraph;
 import instana.service.inputData.FileReader;
 import instana.model.TraceHopState;
 import instana.util.InputUtil;

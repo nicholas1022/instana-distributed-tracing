@@ -1,4 +1,4 @@
-package instana.model;
+package instana.core;
 
 import java.util.Set;
 

@@ -1,8 +1,7 @@
 package test;
 
-import instana.model.TraceGraph;
+import instana.core.TraceGraph;
 import instana.service.trace.TraceService;
-import instana.util.InputUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

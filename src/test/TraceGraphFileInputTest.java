@@ -1,6 +1,6 @@
 package test;
 
-import instana.model.TraceGraph;
+import instana.core.TraceGraph;
 import instana.service.inputData.FileReader;
 import instana.service.inputData.graphInput.GraphFileCommandLineInput;
 import instana.service.inputData.graphInput.GraphFileInput;

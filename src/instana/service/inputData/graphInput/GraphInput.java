@@ -1,7 +1,6 @@
-package instana.service.graph;
+package instana.service.inputData.graphInput;
 
-import instana.model.GraphInterface;
-import instana.service.inputData.graphInput.GraphInputInterface;
+import instana.core.GraphInterface;
 
 public abstract class GraphInput implements GraphInputInterface {
 
