@@ -21,15 +21,14 @@ e.g.:
 # Methodology
 This application uses graph to represent and manipulate a trace.
 
-
 # Implementation
 ## Graph
-* Use Hash Map to implement the graph with latency data
+* Use map of map to implement the graph with latency data
 * Developed two data models TraceHopState and TraceLatencyState for manipulation of the trace
 
 ## Trace
 * Find the number of trace with max or exact hop using BFS
-* 
+* Find the shortest trace using Dijkstra's algorithm
 
 ## Data Input
 * Depended on the abstract to decouple the code and allow easy modification 
