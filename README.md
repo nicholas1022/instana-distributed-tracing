@@ -25,7 +25,7 @@ java -cp out instana.Tracing
 ```
 ## Getting Started
 
-1. Enter traceGraph text file
+1. Enter trace data file
 2. Enter command to run
 
 ## Examples
@@ -68,7 +68,7 @@ count-trace-with-max-latency  <origin_service>-<destination_service>
 # e.g.: count-trace-with-max-latency C-C30
 ```
 
-6. Run the above commands listed in the input file. The commands are separated by comma.
+6. Run the above commands listed in an input file. The commands are separated by comma.
 ```sh
 batch-job  <file_path>
 # e.g.: batch-job commands.txt

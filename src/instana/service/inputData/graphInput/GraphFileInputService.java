@@ -5,13 +5,12 @@ import instana.service.inputData.FileReader;
 import instana.service.inputData.InputDataInterface;
 
 //read the graph data from file
-public class GraphFileInput extends GraphInput {
-
+public class GraphFileInputService extends GraphInput {
 
     InputDataInterface graphFileCommandLineInput;
     FileReader fileReader;
 
-    public GraphFileInput(InputDataInterface graphFileCommandLineInput, FileReader fileReader) {
+    public GraphFileInputService(InputDataInterface graphFileCommandLineInput, FileReader fileReader) {
         this.graphFileCommandLineInput = graphFileCommandLineInput;
         this.fileReader = fileReader;
     }

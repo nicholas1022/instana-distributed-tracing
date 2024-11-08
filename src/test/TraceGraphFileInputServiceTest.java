@@ -2,8 +2,8 @@ package test;
 
 import instana.core.TraceGraph;
 import instana.service.inputData.FileReader;
-import instana.service.inputData.graphInput.GraphFileCommandLineInput;
-import instana.service.inputData.graphInput.GraphFileInput;
+import instana.service.inputData.graphInput.GraphFileCLIInputService;
+import instana.service.inputData.graphInput.GraphFileInputService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +12,13 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class TraceGraphFileInputTest {
-    private GraphFileInput graphFileInput;
+class TraceGraphFileInputServiceTest {
+    private GraphFileInputService graphFileInputService;
 
 
     @BeforeEach
     void setUp() {
-        graphFileInput = new GraphFileInput(new GraphFileCommandLineInput(), new FileReader(new Scanner(System.in)));
+        graphFileInputService = new GraphFileInputService(new GraphFileCLIInputService(), new FileReader(new Scanner(System.in)));
     }
 
     @Test
@@ -31,7 +31,7 @@ class TraceGraphFileInputTest {
         }
 
         TraceGraph traceGraphSample = new TraceGraph();
-        graphFileInput.inputGraph(traceGraphSample, "input.txt");
+        graphFileInputService.inputGraph(traceGraphSample, "trace.txt");
 
 //        normal cases
         assertEquals(expectedTraceGraph, traceGraphSample);

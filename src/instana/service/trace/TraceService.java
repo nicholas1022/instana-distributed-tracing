@@ -188,6 +188,10 @@ public class TraceService {
     }
 
     public void runCommand(String commandParam) {
+        if (commandParam.equalsIgnoreCase("exit")) {
+            System.exit(0);
+        }
+
         String[] inputArr = commandParam.trim().split(" ");
         if (inputArr.length < 2) {
             System.out.println("INVALID INPUT");

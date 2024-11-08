@@ -2,7 +2,7 @@ package instana.service.inputData;
 
 import java.util.Scanner;
 
-public abstract class CommandLineInput implements InputDataInterface {
+public abstract class CLIInput implements InputDataInterface {
 
     @Override
     public String inputData() {

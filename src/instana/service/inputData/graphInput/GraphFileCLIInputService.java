@@ -1,8 +1,8 @@
 package instana.service.inputData.graphInput;
 
-import instana.service.inputData.CommandLineInput;
+import instana.service.inputData.CLIInput;
 
-public class GraphFileCommandLineInput extends CommandLineInput {
+public class GraphFileCLIInputService extends CLIInput {
 
     @Override
     public String inputData() {
