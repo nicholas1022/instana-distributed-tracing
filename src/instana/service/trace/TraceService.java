@@ -1,21 +1,18 @@
-package instana.service;
+package instana.service.trace;
 
 import instana.model.TraceLatencyState;
-import instana.util.CommandFileInput;
-import instana.util.Graph;
+import instana.model.TraceGraph;
+import instana.service.inputData.FileReader;
 import instana.model.TraceHopState;
 import instana.util.InputUtil;
 
 import java.util.*;
 
 public class TraceService {
-    private Graph graph;
+    private TraceGraph traceGraph;
 
-    private InputUtil inputUtil;
-
-    public TraceService(Graph graph, InputUtil inputUtil) {
-        this.graph = graph;
-        this.inputUtil = inputUtil;
+    public TraceService(TraceGraph traceGraph) {
+        this.traceGraph = traceGraph;
     }
 
     
@@ -23,13 +20,13 @@ public class TraceService {
         int totalLatency = 0;
 
         String[] services = trace.split("-");
-        if(trace.length() <= 1 || services.length != 2) {
+        if(services.length < 2) {
             return "INVALID INPUT";
         }
         for (int i = 0; i < services.length - 1; i++) {
             String start = services[i];
             String end = services[i + 1];
-            Integer weight = graph.getLatency(start, end);
+            Integer weight = traceGraph.getLatency(start, end);
             if (weight == null) {
                 return "NO SUCH TRACE";
             }
@@ -41,7 +38,7 @@ public class TraceService {
     
     public int countTraceUnderMaxHop(String data) {
 
-        TraceHopState traceHopState = inputUtil.parseHop(data);
+        TraceHopState traceHopState = InputUtil.parseHop(data);
 
         if (traceHopState == null) return -1;
 
@@ -53,7 +50,7 @@ public class TraceService {
             return -1;
         }
 
-        if (!inputUtil.isValidNodeInput(start) || !inputUtil.isValidNodeInput(end)) {
+        if (!InputUtil.isValidNodeInput(start) || !InputUtil.isValidNodeInput(end)) {
             return -1;
         }
 
@@ -70,7 +67,7 @@ public class TraceService {
             count++;
         }
 
-        for (String next : graph.getNeighbors(current)) {
+        for (String next : traceGraph.getNeighbors(current)) {
             count += countTraceUnderMaxHop(next, end, maxHops, currentHops + 1);
         }
         return count;
@@ -78,7 +75,8 @@ public class TraceService {
 
     
     public int countTraceByExactHops(String data) {
-        TraceHopState traceHopeState = inputUtil.parseHop(data);
+
+        TraceHopState traceHopeState = InputUtil.parseHop(data);
         if (traceHopeState == null) return -1;
 
         String start = traceHopeState.getOriginNode();
@@ -89,7 +87,7 @@ public class TraceService {
             return -1;
         }
 
-        if (!inputUtil.isValidNodeInput(start) || !inputUtil.isValidNodeInput(end)) {
+        if (!InputUtil.isValidNodeInput(start) || !InputUtil.isValidNodeInput(end)) {
             return -1;
         }
 
@@ -103,7 +101,7 @@ public class TraceService {
         }
 
         int count = 0;
-        for (String next : graph.getNeighbors(start)) {
+        for (String next : traceGraph.getNeighbors(start)) {
             count += countTraceByExactHopsHelper(next, end, exactHops - 1);
         }
         return count;
@@ -119,8 +117,7 @@ public class TraceService {
         }
         String start = services[0];
         String end = services[1];
-
-        if (trace.length() <= 1 || services.length <= 1 || !inputUtil.isValidNodeInput(start) || !inputUtil.isValidNodeInput(end)) {
+        if (trace.length() <= 1 || !InputUtil.isValidNodeInput(start) || !InputUtil.isValidNodeInput(end)) {
             return -1;
         }
 
@@ -139,8 +136,8 @@ public class TraceService {
                 continue;
             }
 
-            for (String next : graph.getNeighbors(current.getOriginNode())) {
-                int newLatency = current.getLatency() + graph.getLatency(current.getOriginNode(), next);
+            for (String next : traceGraph.getNeighbors(current.getOriginNode())) {
+                int newLatency = current.getLatency() + traceGraph.getLatency(current.getOriginNode(), next);
                 pq.offer(new TraceLatencyState(next, null, newLatency));
             }
 
@@ -151,13 +148,13 @@ public class TraceService {
 
     public int countTraceUnderLatency(String data) {
         if (data == null) return -1;
-        TraceLatencyState traceLatencyState = inputUtil.parseLatency(data);
+        TraceLatencyState traceLatencyState = InputUtil.parseLatency(data);
         if (traceLatencyState == null) return -1;
         String start = traceLatencyState.getOriginNode();
         String end = traceLatencyState.getDestinationNode();
         int maxLatency = traceLatencyState.getLatency();
 
-        if (!inputUtil.isValidNodeInput(start) || !inputUtil.isValidNodeInput(end) || maxLatency < 0) {
+        if (!InputUtil.isValidNodeInput(start) || !InputUtil.isValidNodeInput(end) || maxLatency < 0) {
             return -1;
         }
         return countTraceUnderLatency(start, end, maxLatency, 0, !start.equalsIgnoreCase(end));
@@ -173,8 +170,8 @@ public class TraceService {
             count = 1;
         }
 
-        for (String next : graph.getNeighbors(current)) {
-            int newLatency = currentLatency + graph.getLatency(current, next);
+        for (String next : traceGraph.getNeighbors(current)) {
+            int newLatency = currentLatency + traceGraph.getLatency(current, next);
             count += countTraceUnderLatency(next, end, maxLatency, newLatency, true);
         }
 
@@ -182,8 +179,8 @@ public class TraceService {
     }
 
     public void batchJob(String file) {
-        CommandFileInput commandFileInput = new CommandFileInput();
-        String inputLine = commandFileInput.inputCommand(file);
+        FileReader fileReader = new FileReader(new Scanner(System.in));
+        String inputLine = fileReader.readData(file);
         String[] inputArr = inputLine.split(",");
         for (String commandInput : inputArr) {
             runCommand(commandInput);

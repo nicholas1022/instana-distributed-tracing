@@ -25,12 +25,12 @@ java -cp out instana.Tracing
 ```
 ## Getting Started
 
-1. Enter graph text file
+1. Enter traceGraph text file
 2. Enter command to run
 
 ## Examples
 ```sh
-# find the average latency of a trace
+# finds the average latency of a trace
 trace-latency A-B-C
 ```
 

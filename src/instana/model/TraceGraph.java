@@ -1,14 +1,16 @@
-package instana.util;
+package instana.model;
 
 import java.util.*;
 
-public class Graph {
+public class TraceGraph implements GraphInterface {
+
     private Map<String, Map<String, Integer>> edgeMap;
 
-    public Graph() {
+    public TraceGraph() {
         this.edgeMap = new HashMap<>();
     }
 
+    @Override
     public void addEdge(String edge) {
         String from = edge.substring(0, 1);
         String to = edge.substring(1, 2);
@@ -22,15 +24,29 @@ public class Graph {
         return edgeMap.getOrDefault(from, Collections.emptyMap()).get(to);
     }
 
-//    public Set<Character> getVertices() {
-//        Set<Character> vertices = new HashSet<>(adjacencyMap.keySet());
-//        for (Map<Character, Integer> edges : adjacencyMap.values()) {
-//            vertices.addAll(edges.keySet());
-//        }
-//        return vertices;
-//    }
-
+    @Override
     public Set<String> getNeighbors(String node) {
         return new HashSet<>(edgeMap.getOrDefault(node, Collections.emptyMap()).keySet());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof TraceGraph)) {
+
+            return false;
+        }
+
+        TraceGraph other = (TraceGraph) obj;
+
+        return  (this.edgeMap == null && other.edgeMap == null) || (this.edgeMap != null && this.edgeMap.equals(other.edgeMap));
+    }
+
 }

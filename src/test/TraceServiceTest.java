@@ -1,7 +1,7 @@
 package test;
 
-import instana.util.Graph;
-import instana.service.TraceService;
+import instana.model.TraceGraph;
+import instana.service.trace.TraceService;
 import instana.util.InputUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,16 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TraceServiceTest {
     private TraceService traceService;
-    private Graph graph;
+    private TraceGraph traceGraph;
 
     @BeforeEach
     void setUp() {
-        graph = new Graph();
+        traceGraph = new TraceGraph();
         String[] edges = {"AB5", "BC4", "CD8", "DC8", "DE6", "AD5", "CE2", "EB3", "AE7"};
         for (String edge : edges) {
-            graph.addEdge(edge);
+            traceGraph.addEdge(edge);
         }
-        traceService = new TraceService(graph, new InputUtil());
+        traceService = new TraceService(traceGraph);
     }
 
     @Test

@@ -1,21 +1,20 @@
-package instana.util;
+package instana.service.inputData;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class CommandFileInput {
+public class FileReader {
 
     Scanner sc;
 
-    public CommandFileInput() {
-        this.sc = new Scanner(System.in);
+    public FileReader(Scanner sc) {
+        this.sc = sc;
     }
 
-    public String inputCommand(String file) {
+    public String readData(String file) {
         String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader(file))) {
             line = reader.readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);

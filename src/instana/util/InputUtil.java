@@ -1,6 +1,5 @@
 package instana.util;
 
-import instana.model.AbstractState;
 import instana.model.TraceHopState;
 import instana.model.TraceLatencyState;
 
@@ -9,13 +8,11 @@ import java.util.List;
 
 public class InputUtil {
 
-    public boolean isValidNodeInput(String node) {
-        if (node == null || node.length() > 1 || !isAlpha(node)) return false;
-
-        return true;
+    public static boolean isValidNodeInput(String node) {
+        return node != null && node.length() <= 1 && isAlpha(node);
     }
 
-    public boolean isAlpha(String s) {
+    public static boolean isAlpha(String s) {
         if (s == null || s.isEmpty()) return false;
         char[] chars = s.toCharArray();
 
@@ -29,7 +26,7 @@ public class InputUtil {
     }
 
 
-    public TraceLatencyState parseLatency(String s) {
+    public static TraceLatencyState parseLatency(String s) {
         List<String> parseList = traceStateParseHelper(s);
         if (parseList == null) return null;
 
@@ -37,14 +34,14 @@ public class InputUtil {
 
     }
 
-    public TraceHopState parseHop(String s) {
+    public static TraceHopState parseHop(String s) {
         List<String> parseList = traceStateParseHelper(s);
         if (parseList == null) return null;
 
         return new TraceHopState(parseList.get(0), parseList.get(1), Integer.parseInt(parseList.get(2)));
     }
 
-    private List<String> traceStateParseHelper(String s) {
+    private static List<String> traceStateParseHelper(String s) {
         if (s == null) return null;
         int i;
         for (i = s.length() - 1; i >= 0; i--) {

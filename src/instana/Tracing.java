@@ -1,31 +1,33 @@
-package instana;// main.util.Graph.java
+package instana;
 
+import instana.model.TraceGraph;
+import instana.service.inputData.CommandLineInput;
+import instana.service.inputData.FileReader;
+import instana.service.inputData.commandInput.CommandCommandLineInput;
+import instana.service.inputData.graphInput.GraphFileCommandLineInput;
+import instana.service.inputData.graphInput.GraphFileInput;
+import instana.service.trace.TraceService;
 
-// main.service.TraceSolver.java
-
-// main.Main.java
-import instana.util.Graph;
-import instana.service.TraceService;
-import instana.util.GraphFileInput;
-import instana.util.InputUtil;
-
-import java.io.*;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Tracing {
 
     public static void main(String[] args) throws IOException {
-        // Read input from file
-        Graph graph = new Graph();
-        GraphFileInput graphFileInput = new GraphFileInput();
-        graphFileInput.inputGraph(graph);
+        // Read graph data from file
+        TraceGraph traceGraph = new TraceGraph();
+        GraphFileInput graphFileInput = new GraphFileInput(new GraphFileCommandLineInput(), new FileReader(new Scanner(System.in)));
+        graphFileInput.inputGraph(traceGraph);
 
-        TraceService traceService = new TraceService(graph, new InputUtil());
+        TraceService traceService = new TraceService(traceGraph);
 
+        CommandLineInput dataInput = new CommandCommandLineInput();
+
+//        read command from command line
         while (true) {
             System.out.println("Enter command (e.g.: trace-latency A-B-C)");
-            Scanner sc = new Scanner(System.in);
-            String input = sc.nextLine();
+
+            String input = dataInput.inputData();
             if (input.equalsIgnoreCase("exit")) {
                 System.exit(0);
             }
